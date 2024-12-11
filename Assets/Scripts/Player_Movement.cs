@@ -11,11 +11,13 @@ public class Player_Movement : MonoBehaviour
     [SerializeField] private Transform groundCheck;
     [SerializeField] private float groundDistance = 0.4f;
     [SerializeField] private LayerMask groundMask;
+    [SerializeField] float jumpForce;
 
     private Vector3 moveDirection;
     private bool isGrounded;
     private Vector3 velocity;
 
+    bool falling=false;
     private void Update()
     {
         // Ground Check
@@ -34,6 +36,7 @@ public class Player_Movement : MonoBehaviour
         // Sprinting Check
         float currentSpeed = Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : walkSpeed;
 
+        //checking is player in climbing and then addingg movement
         if (!(Player_Climbing.instance.climbing))
         {
             Vector3 move = transform.TransformDirection(moveDirection) * currentSpeed;
@@ -43,11 +46,35 @@ public class Player_Movement : MonoBehaviour
         // Jump
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
+            if(falling)
+            {
+                falling = false;
+                Player_Climbing.instance.StopClimbing();
+            }
+            else
+            {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            falling = true;
+            }
         }
 
-        // Apply Gravity
-        velocity.y += gravity * Time.deltaTime;
-        rb.linearVelocity = new Vector3(rb.linearVelocity.x, velocity.y, rb.linearVelocity.z);
+        //enetering and exiting climbing states using isgrounded
+        if(!isGrounded )
+        {
+            Player_Climbing.instance.CheckForWalls();
+        }
+        else
+        {
+            Player_Climbing.instance.StopClimbing();
+            falling = false;
+        }
+        
+        // Apply Gravity if player is not in climbing state
+        if (!(Player_Climbing.instance.climbing))
+        {
+            velocity.y += gravity * Time.deltaTime;
+            rb.linearVelocity = new Vector3(rb.linearVelocity.x, velocity.y, rb.linearVelocity.z);
+        }
+
     }
 }

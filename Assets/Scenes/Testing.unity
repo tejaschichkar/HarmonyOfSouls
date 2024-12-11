@@ -1081,6 +1081,7 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 8
+  jumpForce: 6
 --- !u!114 &1863359186
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1096,13 +1097,14 @@ MonoBehaviour:
   rb: {fileID: 1863359187}
   stamina: 100
   stamina_Text: {fileID: 1720681937}
+  canClimb: 0
   climbing: 0
   sphereCastRadius: 0.5
   sphereCastLength: 0.3
   LM_wall:
     serializedVersion: 2
     m_Bits: 64
-  sphereCastOffset: {x: 0, y: 0, z: 0.5}
+  sphereCastOffset: {x: 0, y: 0, z: 0.9}
   climbSpeed: 3
 --- !u!54 &1863359187
 Rigidbody:
