@@ -1047,6 +1047,7 @@ GameObject:
   - component: {fileID: 1863359189}
   - component: {fileID: 1863359187}
   - component: {fileID: 1863359186}
+  - component: {fileID: 1863359192}
   - component: {fileID: 1863359185}
   - component: {fileID: 1863359191}
   m_Layer: 0
@@ -1097,6 +1098,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   jumpForce: 6
+  CanWallCheck: 1
 --- !u!114 &1863359186
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1110,7 +1112,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 1863359187}
-  stamina: 100
+  stamixna: 100
   stamina_Text: {fileID: 1720681937}
   canClimb: 0
   climbing: 0
@@ -1222,6 +1224,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 2, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1863359192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1863359183}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff32b444bc76cf342bb5c679986d07f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stamina: 100
+  canRechargeStamina: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

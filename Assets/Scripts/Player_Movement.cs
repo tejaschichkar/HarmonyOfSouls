@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Player_Movement : MonoBehaviour
 {
+    public static Player_Movement instance;
     
     [SerializeField] private float walkSpeed = 3f;
     [SerializeField] private float sprintSpeed = 6f;
@@ -17,7 +18,13 @@ public class Player_Movement : MonoBehaviour
     private bool isGrounded;
     private Vector3 velocity;
 
-    bool falling=false;
+    public bool CanWallCheck = true;
+    
+
+    private void Start()
+    {
+        instance = this;
+    }
     private void Update()
     {
         // Ground Check
@@ -46,27 +53,18 @@ public class Player_Movement : MonoBehaviour
         // Jump
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
-            if(falling)
-            {
-                falling = false;
-                Player_Climbing.instance.StopClimbing();
-            }
-            else
-            {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-            falling = true;
-            }
         }
 
         //enetering and exiting climbing states using isgrounded
-        if(!isGrounded )
+        if(!isGrounded && CanWallCheck)
         {
             Player_Climbing.instance.CheckForWalls();
         }
         else
         {
             Player_Climbing.instance.StopClimbing();
-            falling = false;
+            
         }
         
         // Apply Gravity if player is not in climbing state
@@ -76,5 +74,13 @@ public class Player_Movement : MonoBehaviour
             rb.linearVelocity = new Vector3(rb.linearVelocity.x, velocity.y, rb.linearVelocity.z);
         }
 
+    }
+
+    public void ResetCanWallCheck()
+    {
+        if(isGrounded)
+        {
+        CanWallCheck = true;
+        }
     }
 }

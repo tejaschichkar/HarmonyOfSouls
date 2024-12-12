@@ -6,7 +6,7 @@ public class Player_Climbing : MonoBehaviour
     //references
     [SerializeField] Rigidbody rb;
     public static Player_Climbing instance;
-    public float stamina=100;
+   
     [SerializeField] TextMeshProUGUI stamina_Text;
 
     //casting for climbing
@@ -30,17 +30,16 @@ public class Player_Climbing : MonoBehaviour
     private void Update()
     {
         //ui
-        stamina_Text.text = "Stamina: " +(int) stamina;
+        stamina_Text.text = "Stamina: " +(int) Player_Statts.instance.stamina;
 
-
-        //CheckForWalls();
-        //updating climbing
-        if (!climbing && stamina < 100)
+        //space to exit climbing
+        if(climbing && Input.GetKeyDown(KeyCode.Space))
         {
-            stamina += Time.deltaTime;
+            StopClimbing();
+            Player_Movement.instance.CanWallCheck = false;
         }
 
-        if (stamina <= 0)
+        if (Player_Statts.instance.stamina <= 0)
         {
             StopClimbing();
         }
@@ -52,6 +51,11 @@ public class Player_Climbing : MonoBehaviour
         canClimb = false;
         climbing = false;
         rb.useGravity = true;
+        Player_Movement.instance.ResetCanWallCheck();
+
+        //for stamina
+        Player_Statts.instance.canRechargeStamina = true;
+
     }
 
     private void StartClimbing()
@@ -59,6 +63,7 @@ public class Player_Climbing : MonoBehaviour
         if (canClimb)
         {
             climbing = true;
+            Player_Statts.instance.canRechargeStamina = false;
         }
         else
         {
@@ -68,7 +73,7 @@ public class Player_Climbing : MonoBehaviour
         //upward movement
         if (canClimb && Input.GetKey(KeyCode.W))
         {
-            if (stamina > 0)
+            if (Player_Statts.instance.stamina > 0)
             {
                 
                 transform.position += new Vector3(0, climbSpeed, 0) * Time.deltaTime;
@@ -77,7 +82,7 @@ public class Player_Climbing : MonoBehaviour
         //downward movement
         if (canClimb && Input.GetKey(KeyCode.S))
         {
-            if (stamina > 0)
+            if (Player_Statts.instance.stamina > 0)
             {
                 climbing = true;
                 transform.position += new Vector3(0, -climbSpeed, 0) * Time.deltaTime;
@@ -86,9 +91,8 @@ public class Player_Climbing : MonoBehaviour
         //right movement
         if(canClimb && Input.GetKey(KeyCode.D))
         {
-            if (stamina > 0)
+            if (Player_Statts.instance.stamina > 0)
             {
-                Debug.Log("running");
                 climbing = true;
                 transform.position += new Vector3(climbSpeed, 0, 0) * Time.deltaTime;
             }
@@ -96,7 +100,7 @@ public class Player_Climbing : MonoBehaviour
         //left movement
         if (canClimb && Input.GetKey(KeyCode.A))
         {
-            if (stamina > 0)
+            if (Player_Statts.instance.stamina > 0)
             {
                 climbing = true;
                 transform.position += new Vector3(-climbSpeed, 0, 0) * Time.deltaTime;
@@ -109,7 +113,7 @@ public class Player_Climbing : MonoBehaviour
         {
             rb.linearVelocity = Vector3.zero; 
             rb.angularVelocity = Vector3.zero;
-            stamina -= Time.deltaTime;
+            Player_Statts.instance.stamina -= Time.deltaTime;
             rb.useGravity = false;
             
         }
